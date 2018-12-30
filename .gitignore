@@ -1,0 +1,156 @@
+.DS_Store
+
+application/cache/*
+!application/cache/index.html
+
+application/logs/*
+!application/logs/index.html
+
+!application/*/.htaccess
+
+composer.lock
+
+user_guide_src/build/*
+user_guide_src/cilexer/build/*
+user_guide_src/cilexer/dist/*
+user_guide_src/cilexer/pycilexer.egg-info/*
+/vendor/
+
+# IDE Files
+#-------------------------
+/nbproject/
+.idea/*
+
+## Sublime Text cache files
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
+*.sublime-project
+/tests/tests/
+/tests/results/
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/.-Anand-John68201653153_38.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/.-HIndocha613201681148_919.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/0-NSS-20184172018112122_60.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/2017-20184172018110925_213.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/a-B-Mankad111201843435_852.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/a-Jangbari111201842403_478.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/AjaxLoader.gif
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/Ami-Jivani111201851556_391.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/-Anil-Kotak111201850259_29.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/ani-Raval1112018120241_705.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/a-Parsania111201813219_425.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/a-Raithatha68201644150_812.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/a-Ratapara111201851618_977.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/army-Kothari68201635205_96.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/atics-2017120201834735_515.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/ation-2017120201830827_468.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/ation-2017120201831709_337.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/ation-2017120201832044_702.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/ation-2017123201894930_140.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/auguration120201830653_796.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/avi-Thaker111201851742_299.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/ayesh-Mehta111201850516_46.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/bhay-Bavishi68201641214_18.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/chana-Rana111201842502_896.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/cis-Dsouza111201844254_945.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/Club-20184172018111518_896.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/ction-2017120201831259_416.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/dha-Barad 111201851714_768.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/dma-Ambalam68201640129_179.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/e-Day-2017120201831102_594.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/eela-Manoj111201850547_953.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/e-Fernandes68201642906_512.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/eminar-2017123201895404_93.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/ence-Day14172018113316_527.JPG
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/enny-Joseph726201662129_49.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/evang-Mehta68201630750_272.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/f-BI-20184172018112950_463.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/Fernandes6282016124702_655.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/Gaurav-Vora68201643355_939.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/GST-2017120201832522_935.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/hali-Katira68201631142_600.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/h-Thakrar1112018125729_243.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/h-Vavaiya1112018122349_196.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/i-Chovatiya68201632539_613.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/imon-Joseph111201851916_65.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/in-Thomas1112018122133_967.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/isha-Vyas1112018122246_498.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/ish-Prasad111201843153_936.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/ita-Ganatra68201630435_784.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/ita-Ganguly68201641439_582.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/itsinh-Vala68201625408_330.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/iyank-Patel68201635841_237.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/-J.-Georrge68201631459_854.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/-Jeba-Praba68201651549_186.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/ju-Kalayil111201851827_509.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/kash-Khagram68201650550_45.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/kumari-Bera68201651759_714.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/llary-Dias111201851849_579.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/logo.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/-L-Thaker1142018113336_943.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/ment-20184172018111346_624.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/ment-20184172018112432_943.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/minar-2017123201895247_122.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/NAAC.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/na-Dwivedi111201842603_601.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/nam-Saiyad111201814652_191.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/na-R-Joshi111201852002_212.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/nasa-Joshi111201814611_296.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/nce-Day-24172018113439_905.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/n-Cell-2017120201831210_23.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/ngani-Rauf613201680734_939.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/nice-20184172018112323_580.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/n-Kothiya1112018124847_795.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/N-N-Sheth1112018123931_730.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/noj-Xavier111201851519_452.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/-NSS-20184172018111702_264.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/-NSS-20184172018111750_660.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/-NSS-20184172018111823_534.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/-NSS-20184172018111923_106.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/-NSS-20184172018112006_270.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/ntest-2017120201830951_165.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/nt-Vankani613201675453_278.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/n-V.-Mohtra68201653021_830.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/oinfo-Dept120201831950_805.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/-P.-Pithva613201681646_595.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/pandan-201799201722842_718.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/-Paniker10292017121913_941.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/phonsa-KL7272016100516_706.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/pti-Valera111201851803_272.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/raj-Sharma111201850725_977.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/rdik-Udeshi68201644536_266.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/r-Jay-Jani111201844745_613.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/r-K-K-Sabu111201851406_556.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/r-Mary-A-O7272016100230_53.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/-Sabu-K.K.613201692410_608.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/Saija-Shruti68201642544_43.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/s-Day-2017120201831536_897.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/s-Day-2017120201832312_358.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/-Sebastian111201850802_762.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/Shares-John611201694127_33.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/sha-Vaidya613201691702_972.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/-Sherly-DP111201850406_556.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/shmi-Pala1112018123851_470.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/sinh-Gohil111201851937_692.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/sinh-Jadeja111201842533_22.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/sinh-Jadeja68201645408_382.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/-Sony-Zala727201695806_207.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/Swati-Doshi68201643146_747.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/-Test-20184172018112214_32.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/tion-20184172018110731_636.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/tion-20184172018113033_530.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/Tisha-Roy7272016100920_733.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/Tosha-Joshi68201652317_647.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/Unit-20184172018111236_194.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/-Urjitbhai613201674744_118.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/vidha-2017120201831359_261.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/vindakshan613201691512_615.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/Virpariya1112018124922_787.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/Vivekanand120201831836_389.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/vyesh-Boda111201813604_660.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/ysis-20184172018111106_578.jpg
+/zip/christcollegerajkot-edu-in-Staff - Christ College - Rajkot-zip - 22-07-2018 00-06-23-zip/Zone-20184172018112837_827.jpg
+/uploads/employee/emp_img_2.jpg
+/uploads/employee/emp_img_6.jpg
+/uploads/user/profile/user_img_1.jpg
