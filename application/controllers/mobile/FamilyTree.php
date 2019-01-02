@@ -61,7 +61,7 @@ class FamilyTree extends MobileController
         $userdata = $this->sesssion->usedata('vanshavali-mobile')[0];
 
         //get post data
-        if (isset($_POST['family_tree_name'])) {
+        if ((isset($_POST['family_tree_name']))) {
             //check if family with sam name exists
             $tree_list = $this->CommonModel
                 ->getRecord('family_trees', array('family_tree_id'), array('family_tree_name' => $_POST['family_tree_name']));
@@ -110,7 +110,7 @@ class FamilyTree extends MobileController
         $userdata = $this->sesssion->usedata('vanshavali-mobile')[0];
 
         //get post data
-        if (isset($_POST['new_family_tree_name']) && isset($_POST['old_family_tree_name'])) {
+        if ((isset($_POST['new_family_tree_name'])) && (isset($_POST['old_family_tree_name']))) {
             //check if family with sam name exists
             $tree_list = $this->CommonModel
                 ->getRecord('family_trees', array('family_tree_id'), array('family_tree_name' => $_POST['new_family_tree_name']));
@@ -153,11 +153,53 @@ class FamilyTree extends MobileController
                 }
 
             }
-        }else{
+        } else {
             $response_array['message'] = 'Parameters missing or invalid  in post data';
         }
         echo json_encode($response_array);
         exit;
     }
+
+    /*
+     * Removes Or Deletes Family Tree
+     * */
+    public function removeFamilyTree()
+    {
+        $response_array = array('code' => 0, 'message' => '');
+        $userdata = $this->sesssion->usedata('vanshavali-mobile')[0];
+
+        if ((isset($_POST['family_id']))) {
+
+            //is user Authororised to delete . check family_access_table
+
+            //now check if user is owner of family
+            $chcek_user = $this->CommonModel
+                ->getRecord('family_access_table', '*', array('family_id' => $_POST['family_id'], 'user_id' => $userdata['user_id'], 'can_delete' => 1))->num_row();
+            if ($chcek_user == 1) {
+                //user is authorised
+                //go For delete
+
+                $delete_family = $this->CommonModel->delete('family_access_table', array('user_id' => $userdata['user_id'], 'family_id' => $_POST['family_id']));
+
+                $response_array['code'] = 1;
+                $response_array['message'] = 'Family Deleted Successfully';
+            } else {
+                //user not authorised
+                $response_array['code'] = 0;
+                $response_array['message'] = 'You Are Not Authorised To Delete Family';
+
+            }
+
+
+        } else {
+            $response_array['message'] = 'Parameters missing or invalid  in post data';
+
+        }
+        echo json_encode($response_array);
+        exit;
+
+
+    }
+
 
 }
