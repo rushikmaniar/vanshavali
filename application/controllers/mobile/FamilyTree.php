@@ -64,7 +64,7 @@ class FamilyTree extends MobileController
         if ((isset($_POST['family_tree_name']))) {
             //check if family with sam name exists
             $tree_list = $this->CommonModel
-                ->getRecord('family_trees', array('family_tree_id'), array('family_tree_name' => $_POST['family_tree_name']));
+                ->getRecord('family_trees', array('family_tree_name' => $_POST['family_tree_name']) ,array('family_tree_id'));
 
             if ($tree_list->num_rows() > 0) {
                 //family with same name already exsts. generate error
