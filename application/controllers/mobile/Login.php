@@ -9,7 +9,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends CI_Controller
 {
-    public $response_array = array();
+    protected $response_array = array(
+
+        'vanshavali_response'=>array(
+
+            'code'=>null,
+            'message'=>null,
+            'data'=>null
+
+        )
+
+    );
+
 
     public function __construct()
     {
@@ -60,23 +71,21 @@ class Login extends CI_Controller
      * */
     public function registerUser()
     {
-
-        $response_array = array('code' => 0, 'message' => '');
-
-
         if ((isset($_POST['user_email'])) && (isset($_POST['user_pass']))) {
             //check if user logged in
             if ((isset($_SESSION['vanshavali-mobile']))) {
                 //send error . user logged in 
-                $response_array['message'] = "User Logged In .";
-                echo json_encode($response_array);
+                $this->response_array['vanshavali_response']['code'] = 403;
+                $this->response_array['vanshavali_response']['message'] = 'Error 403 Forbidden . User Session LoggedIn';
+                echo json_encode($this->response_array);
                 exit;
             } else {
                 //check if user already exists
                 $user_data = $this->CommonModel->getRecord('user_master', array('user_email' => $_POST['user_email']), '*');
                 if ($user_data->num_rows() > 0) {
                     //user already exits
-                    $response_array['message'] = "User Already Exists.";
+                    $this->response_array['vanshavali_response']['code'] = 409;
+                    $this->response_array['vanshavali_response']['message'] = 'Error 409 Conflicts . User Already Exists . Try Another username';
                 } else {
                     //go for registration
                     $userinfo = array();
@@ -102,21 +111,23 @@ class Login extends CI_Controller
 
                     $userid = $this->CommonModel->save('user_master', $userinfo);
 
-                    //send mail code
+                    //TODO : send mail code in registerUser
 
 
-                    $response_array['code'] = 1;
-                    $response_array['message'] = 'User Registered Successfully';
+                    $this->response_array['vanshavali_response']['code'] = 200;
+                    $this->response_array['vanshavali_response']['message'] = 'Status 200 OK. User Created Succesfully';
                 }
             }
         } else {
-            $response_array['message'] = 'Parameters missing or invalid  in post data';
+            //wrong parameters Error 400 Bad Request
+            $this->response_array['vanshavali_response']['code'] = 400;
+            $this->response_array['vanshavali_response']['message'] = 'Error 400 Bad Request. Insufficient Parameters';
         }
-        echo json_encode($response_array);
+        echo json_encode($this->response_array);
         exit;
     }
 
-    public function createRandomCode()
+    private function createRandomCode()
     {
 
         $chars = "abcdefghijkmnopqrstuvwxyz023456789";
@@ -134,6 +145,7 @@ class Login extends CI_Controller
         return $pass;
 
     }
+    //TODO: forgot Password
 
 
 }

@@ -14,6 +14,11 @@ class FamilyTree extends MobileController
         parent::__construct();
     }
 
+    public function index()
+    {
+
+    }
+
     /*
      *  Get list of Family trees Relevant To Looged In User From family_trees_table
      *
@@ -21,7 +26,8 @@ class FamilyTree extends MobileController
     public function getFamilyTreeList()
     {
         //logged in user data
-        $userdata = $this->sesssion->usedata('vanshavali-mobile')[0];
+
+        $userdata = $this->sesssion->userdata('vanshavali-mobile');
 
         $val = '
             family_trees.family_tree_id,
@@ -48,7 +54,11 @@ class FamilyTree extends MobileController
                 )
             )->getRecord('family_trees', $OrWhere, $val)->result_array();
 
-        echo json_encode($family_list);
+        $this->response_array['vanshavali_response']['code'] = 200;
+        $this->response_array['vanshavali_response']['data']['family_list'] = $family_list;
+        $this->response_array['vanshavali_response']['message'] = 'Status 200 Ok . Family List Fetched';
+
+        echo json_encode($this->response_array);
         exit(0);
     }
 
@@ -57,19 +67,19 @@ class FamilyTree extends MobileController
      * */
     public function createFamilyTree()
     {
-        $response_array = array('code' => 0, 'message' => '');
-        $userdata = $this->sesssion->usedata('vanshavali-mobile')[0];
+
+        $userdata = $this->sesssion->userdata('vanshavali-mobile');
 
         //get post data
         if ((isset($_POST['family_tree_name']))) {
             //check if family with sam name exists
             $tree_list = $this->CommonModel
-                ->getRecord('family_trees', array('family_tree_name' => $_POST['family_tree_name']) ,array('family_tree_id'));
+                ->getRecord('family_trees', array('family_tree_name' => $_POST['family_tree_name']), array('family_tree_id'));
 
             if ($tree_list->num_rows() > 0) {
                 //family with same name already exsts. generate error
-                $response_array['code'] = 0;
-                $response_array['message'] = 'Family Already Exists . Try Another Name';
+                $this->response_array['vanshavali_response']['code'] = 409;
+                $this->response_array['vanshavali_response']['message'] = 'Error 409 Conflicts . Family Already Exists . Try Another Name';
             } else {
                 $family_details = array();
 
@@ -91,13 +101,13 @@ class FamilyTree extends MobileController
 
                 $this->CommonModel->save('family_access_table', $family_access);
 
-                $response_array['code'] = 1;
-                $response_array['message'] = 'Family Added Successfully';
+                $this->response_array['vanshavali_response']['code'] = 200;
+                $this->response_array['vanshavali_response']['message'] = '200 Ok . Family Added Successfully';
 
             }
 
         }
-        echo json_encode($response_array);
+        echo json_encode($this->response_array);
         exit;
     }
 
@@ -106,57 +116,49 @@ class FamilyTree extends MobileController
      * */
     public function updateFamilyTree()
     {
-        $response_array = array('code' => 0, 'message' => '');
-        $userdata = $this->sesssion->usedata('vanshavali-mobile')[0];
+        $userdata = $this->sesssion->userdata('vanshavali-mobile');
 
         //get post data
-        if ((isset($_POST['new_family_tree_name'])) && (isset($_POST['old_family_tree_name']))) {
-            //check if family with sam name exists
-            $tree_list = $this->CommonModel
-                ->getRecord('family_trees', array('family_tree_id'), array('family_tree_name' => $_POST['new_family_tree_name']));
+        if ((isset($_POST['new_family_tree_name'])) && (isset($_POST['old_family_tree_name'])) && (isset($_POST['family_id']))) {
+            //check if user is authorised . user should be owner of family
+            $where = array('family_tree_id' => $_POST['family_id'], 'family_tree_ownerid' => $userdata['user_id']);
+            $chcek_owner = $this->CommonModel
+                ->getRecord('family_trees', $where)->num_rows();
 
-            if ($_POST['new_family_tree_name'] == $_POST['old_family_tree_name']) {
-                //same name applied . do nothing
-            } else {
-                //name changed
+            if ($chcek_owner == 1) {
+                //users is authorised . check for duplication of family tree name
+                $orWhere = array('family_tree_name' => $_POST['new_family_tree_name'], 'family_tree_id !=' => $_POST['family_id']);
+                $tree_list = $this->CommonModel
+                    ->getRecord('family_trees', $orWhere);
                 if ($tree_list->num_rows() > 0) {
-                    //family with same name already exsts. generate error
-                    $response_array['code'] = 0;
-                    $response_array['message'] = 'Family Already Exists . Try Another Name';
+                    //famliy name Exists Error
+                    $this->response_array['vanshavali_response']['code'] = 409;
+                    $this->response_array['vanshavali_response']['message'] = 'Error 409 Conflicts . Family Already Exists . Try Another Name';
                 } else {
-                    //now check if user is owner of family
-                    $chcek_owner = $this->CommonModel
-                        ->getRecord('family_trees', array('family_tree_id'), array('family_tree_name' => $_POST['old_family_tree_name'], 'family_tree_ownerid' => $userdata['user_id']))->num_row();
+                    //go For Update
+                    $family_details = array();
 
-                    if ($chcek_owner == 1) {
-                        //user is owner of family
-
-                        //now go for update
-                        $family_details = array();
-
-                        //continue to insert new family in family_trees
-                        $family_details['family_tree_name'] = $this->input->post('new_family_tree_name');
+                    //continue to insert new family in family_trees
+                    $family_details['family_tree_name'] = $this->input->post('new_family_tree_name');
 
 
-                        $this->CommonModel->update('family_trees', $family_details, array('family_tree_name' => $_POST['old_family_tree_name']));
+                    $this->CommonModel->update('family_trees', $family_details, array('family_tree_id' => $_POST['family_id']));
 
-                        $response_array['code'] = 1;
-                        $response_array['message'] = 'Family Updated Successfully';
-
-                    } else {
-                        //user not authorised to rename
-                        $response_array['code'] = 0;
-                        $response_array['message'] = 'You Are Not Authorised to Rename Family';
-
-                    }
-
+                    $this->response_array['vanshavali_response']['code'] = 200;
+                    $this->response_array['vanshavali_response']['message'] = 'Status 200 OK . Family Tree Name Updated';
                 }
 
+            } else {
+                //error user not authorised
+                $this->response_array['vanshavali_response']['code'] = 403;
+                $this->response_array['vanshavali_response']['message'] = 'Error 403 Forbidden . User Not Authorised To Rename Family Tree';;
             }
         } else {
-            $response_array['message'] = 'Parameters missing or invalid  in post data';
+            //wrong parameters Error 400 Bad Request
+            $this->response_array['vanshavali_response']['code'] = 400;
+            $this->response_array['vanshavali_response']['message'] = 'Error 400 Bad Request. Insufficient Parameters';
         }
-        echo json_encode($response_array);
+        echo json_encode($this->response_array);
         exit;
     }
 
@@ -165,41 +167,47 @@ class FamilyTree extends MobileController
      * */
     public function removeFamilyTree()
     {
-        $response_array = array('code' => 0, 'message' => '');
-        $userdata = $this->sesssion->usedata('vanshavali-mobile')[0];
+        $userdata = $this->sesssion->userdata('vanshavali-mobile');
 
         if ((isset($_POST['family_id']))) {
 
             //is user Authororised to delete . check family_access_table
 
             //now check if user is owner of family
+            $where = array(
+                'family_id' => $_POST['family_id'],
+                'family_tree_ownerid' => $userdata['user_id']
+            );
             $chcek_user = $this->CommonModel
-                ->getRecord('family_access_table', '*', array('family_id' => $_POST['family_id'], 'user_id' => $userdata['user_id'], 'can_delete' => 1))->num_row();
+                ->getRecord('family_trees', $where)->num_rows();
             if ($chcek_user == 1) {
                 //user is authorised
                 //go For delete
 
-                $delete_family = $this->CommonModel->delete('family_access_table', array('user_id' => $userdata['user_id'], 'family_id' => $_POST['family_id']));
+                $delete_family = $this->CommonModel->delete('family_trees', array('family_id' => $_POST['family_id']));
 
-                $response_array['code'] = 1;
-                $response_array['message'] = 'Family Deleted Successfully';
+                $this->response_array['vanshavali_response']['code'] = 200;
+                $this->response_array['vanshavali_response']['message'] = '200 OK . Family Tree Successfully';
             } else {
                 //user not authorised
-                $response_array['code'] = 0;
-                $response_array['message'] = 'You Are Not Authorised To Delete Family';
+                $this->response_array['vanshavali_response']['code'] = 403;
+                $this->response_array['vanshavali_response']['message'] = 'Error 403 Forbidden . User Not Authorised';
 
             }
 
 
         } else {
-            $response_array['message'] = 'Parameters missing or invalid  in post data';
+            $this->response_array['vanshavali_response']['code'] = 400;
+            $this->response_array['vanshavali_response']['message'] = 'Error 400 Bad Request . Parameters Invalid';
 
         }
-        echo json_encode($response_array);
+        echo json_encode($this->response_array);
         exit;
 
 
     }
+
+
 
 
 }

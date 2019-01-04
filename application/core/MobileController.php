@@ -8,32 +8,47 @@
 
 class MobileController extends CI_Controller
 {
+    /*
+     * Response to be send in json
+     * */
+    protected $response_array = array(
+
+        'vanshavali_response'=>array(
+
+                'code'=>null,
+                'message'=>null,
+                'data'=>null
+
+        )
+
+    );
+
     public function __construct()
     {
         parent::__construct();
         $this->load->model('CommonModel');
-        $response_array = array();
 
-        if(isset($_SESSION['vanshavali-mobile'])){
+        if((isset($_SESSION['vanshavali-mobile']))){
             //check if user exist in database
             $whr = array("user_email"=>$this->session->userdata('vanshavali-mobile')['user_email'],"is_verified"=>1);
             $result = $this->CommonModel->getRecord("user_master",$whr);
             if($result->num_rows() == 1){
-                //continue
-                $response_array['code'] = 1;
-                $response_array['message']= 'Login Successfully';
+                //continue nothing to do . echo json response is compulsory
             }else{
                 $this->session->unset_userdata('vanshavali-mobile');
-
-                $response_array['code'] = 0;
-                $response_array['message'] = 'Username Password Incorrect';
+                $this->response_array['vanshavali_response']['code'] = 401;
+                $this->response_array['vanshavali_response']['message'] = 'User Authenticatoin Failed.';
+                echo json_encode($this->response_array);
+                exit;
             }
         }else{
             //nothing
-            $response_array['code'] = 0;
-            $response_array['message']='Session Out';
+            $this->response_array['vanshavali_response']['code'] = 401;
+            $this->response_array['vanshavali_response']['message'] = 'Session Expired.';
+            echo json_encode($this->response_array);
+            exit;
         }
 
-        echo json_encode($response_array);
+        //echo json_encode($this->response_array);
     }
 }
