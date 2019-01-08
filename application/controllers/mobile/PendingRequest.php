@@ -85,7 +85,7 @@ class PendingRequest extends MobileController
         if( (isset($_POST['family_tree_id']))){
             $userdata = $this->session->userdata('vanshavali-mobile');
 
-            //check if user is author of familt_tree
+            //check if user is owner of family_tree
             $family_where = array(
                 'family_tree_ownerid'=>$userdata['user_id'],
                 'family_tree_id'=>$_POST['family_tree_id']
@@ -128,14 +128,14 @@ class PendingRequest extends MobileController
         if( (isset($_POST['family_tree_id'])) && (isset($_POST['request_id']))){
             $userdata = $this->session->userdata('vanshavali-mobile');
 
-            //check if user is author of familt_tree
+            //check if user is owner of family_tree
             $family_where = array(
                 'family_tree_ownerid'=>$userdata['user_id'],
                 'family_tree_id'=>$_POST['family_tree_id']
             );
             $check_owner = $this->CommonModel->getRecord('family_trees',$family_where)->num_rows();
             if($check_owner == 1){
-                //user is owner of family . allow to delte request
+                //user is owner of family . allow to delete request
                 $where = array(
                     'id'=>$_POST['request_id']
                 );
@@ -170,20 +170,72 @@ class PendingRequest extends MobileController
         if( (isset($_POST['family_tree_id'])) && (isset($_POST['request_id']))){
             $userdata = $this->session->userdata('vanshavali-mobile');
 
-            //check if user is author of familt_tree
+            //check if user is owner of family_tree
             $family_where = array(
                 'family_tree_ownerid'=>$userdata['user_id'],
                 'family_tree_id'=>$_POST['family_tree_id']
             );
             $check_owner = $this->CommonModel->getRecord('family_trees',$family_where)->num_rows();
             if($check_owner == 1){
-                //user is owner of family . allow to delte request
+                //user is owner of family . allow to make viewed  request
                 $where = array(
                     'id'=>$_POST['request_id']
                 );
                 $pending_request = $this->CommonModel->update('pending_request',array('is_viewed'=>1),$where);
                 $this->response_array['vanshavali_response']['code'] = 200;
-                $this->response_array['vanshavali_response']['message'] = 'Status 200 Ok. Pending request Deleted';
+                $this->response_array['vanshavali_response']['message'] = 'Status 200 Ok. Pending request Viewed';
+
+            }else{
+                //user is not owner of family
+                //error 403 Forbidden.
+                $this->response_array['vanshavali_response']['code'] = 403;
+                $this->response_array['vanshavali_response']['message'] = 'Error 403 Forbidden. User Not Authorised To Delete Pending Request';
+            }
+
+        }else{
+            //error 400 bad reqest . invalid parameters
+            $this->response_array['vanshavali_response']['code'] = 400;
+            $this->response_array['vanshavali_response']['message'] = 'Error 400 BadRequest. Invalid Parameters Passed';
+        }
+        echo json_encode($this->response_array);
+        exit;
+    }
+
+    /*
+     * make request accepted . pending_request is_accept = 1
+     * post data : family_tree_id , request_id , request_from_user_id
+     *
+     * */
+    public function makeRequestAccepted()
+    {
+        if( (isset($_POST['family_tree_id'])) && (isset($_POST['request_id'])) && (isset($_POST['request_from_user_id']))   ){
+            $userdata = $this->session->userdata('vanshavali-mobile');
+
+            //check if user is owner of family_tree
+            $family_where = array(
+                'family_tree_ownerid'=>$userdata['user_id'],
+                'family_tree_id'=>$_POST['family_tree_id']
+            );
+            $check_owner = $this->CommonModel->getRecord('family_trees',$family_where)->num_rows();
+            if($check_owner == 1){
+                //user is owner of family .
+
+                $where = array(
+                    'id'=>$_POST['request_id']
+                );
+                $pending_request = $this->CommonModel->update('pending_request',array('is_accepted'=>1),$where);
+
+                //insert data in family_access_table
+
+                $family_accss_data = array(
+                    'user_id'=>$_POST['request_from_user_id'],
+                    'family_id'=>$_POST['family_tree_id'],
+                    'can_view'=>1
+                );
+                $family_access_table = $this->CommonModel->save('family_access_table',$family_accss_data);
+
+                $this->response_array['vanshavali_response']['code'] = 200;
+                $this->response_array['vanshavali_response']['message'] = 'Status 200 Ok. Pending request Accepted';
 
             }else{
                 //user is not owner of family
