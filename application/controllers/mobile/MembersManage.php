@@ -34,7 +34,28 @@ class MembersManage extends MobileController
                 'family_id'=>$_POST['family_id']
             );
             $family_access = $this->getRecord('family_access_table',$family_access_where)->row_array();
+
+            //check id can_view = 1
+            if($family_access['can_view'] == 1){
+                //user Authorised to view Family
+                $member_list_where = array(
+                    'member_family_tree_id'=>$_POST['family_id']
+                );
+                $member_list = $this->CommonModel->getRecord('member_list')->result_array();
+
+                $this->response_array['vanshavali_response']['data']['member_list'] = $member_list;
+                $this->response_array['vanshavali_response']['code'] = 200;
+                $this->response_array['vanshavali_response']['message'] = 'Status 200 Ok. Family Records Fetech Succcessfuly';
+            }else{
+                //else user is not Authorised to view Family . Error 403 Forbidden
+                $this->response_array['vanshavali_response']['code'] = 403;
+                $this->response_array['vanshavali_response']['message'] = 'Error 403 Forbidden . User Not Authorised';
+            }
+
         }else{
+            //Invalid Paramenter Error 400 Bad Request.
+            $this->response_array['vanshavali_response']['code'] = 400;
+            $this->response_array['vanshavali_response']['message'] = 'Error 400 Bad request. Invalid Parameters';
 
         }
     }
