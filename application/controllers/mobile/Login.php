@@ -71,6 +71,7 @@ class Login extends CI_Controller
      * */
     public function registerUser()
     {
+       
         if ((isset($_POST['user_email'])) && (isset($_POST['user_pass']))) {
             //check if user logged in
             if ((isset($_SESSION['vanshavali-mobile']))) {
@@ -90,7 +91,7 @@ class Login extends CI_Controller
                     //go for registration
                     $userinfo = array();
                     $userinfo['user_email'] = $this->input->post('user_email');
-                    $userinfo['user_email'] = md5($this->input->post('user_email'));
+                    $userinfo['user_pass'] = md5($this->input->post('user_pass'));
 
 
                     //user type as simple user
@@ -104,11 +105,11 @@ class Login extends CI_Controller
                     $temp = 1;
                     while ($temp != 0) {
                         $random_code = $this->createRandomCode();
-                        $temp = $this->CommonModel->getRecord('user_master', array('verfication_code' => $random_code))->num_rows();
+                        $temp = $this->CommonModel->getRecord('user_master', array('verification_code' => $random_code))->num_rows();
                     }
 
-                    $userinfo['verfication_code'] = $random_code;
-
+                    $userinfo['verification_code'] = $random_code;
+                    
                     $userid = $this->CommonModel->save('user_master', $userinfo);
 
                     //TODO : send mail code in registerUser
