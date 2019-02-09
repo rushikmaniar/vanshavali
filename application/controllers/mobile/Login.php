@@ -148,5 +148,32 @@ class Login extends CI_Controller
     }
     //TODO: forgot Password
 
+    public function checkexists($update_field = false,$id = false)
+    {
+        //update field and $id  used while edit in CRUD
+
+        $table = $this->input->post('table');
+        $field = $this->input->post('field');
+        $value = $this->input->post($field);
+
+        if (isset($id) && $id != '' && isset($update_field) && $update_field != '') {
+            $c = $this->CommonModel->getRecord($table, array($field => $value, "$update_field !=" => $id))->num_rows();
+
+        } else {
+            $c = $this->CommonModel->getRecord($table, array($field => $value))->num_rows();
+        }
+
+        if ($c > 0) {
+            $this->response_array['vanshavali_response']['code'] = 200;
+            $this->response_array['vanshavali_response']['message']=false;
+        } else {
+            $this->response_array['vanshavali_response']['code'] = 200;
+            $this->response_array['vanshavali_response']['message']=true;
+        }
+        echo json_encode($this->response_array);
+        exit();
+
+    }
+
 
 }
