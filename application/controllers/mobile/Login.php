@@ -9,13 +9,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends CI_Controller
 {
+    private $len = 50;
     protected $response_array = array(
 
-        'vanshavali_response'=>array(
+        'vanshavali_response' => array(
 
-            'code'=>null,
-            'message'=>null,
-            'data'=>null
+            'code' => null,
+            'message' => null,
+            'data' => null
 
         )
 
@@ -71,53 +72,46 @@ class Login extends CI_Controller
      * */
     public function registerUser()
     {
-       
+
         if ((isset($_POST['user_email'])) && (isset($_POST['user_pass']))) {
-            //check if user logged in
-            if ((isset($_SESSION['vanshavali-mobile']))) {
-                //send error . user logged in 
-                $this->response_array['vanshavali_response']['code'] = 403;
-                $this->response_array['vanshavali_response']['message'] = 'Error 403 Forbidden . User Session LoggedIn';
-                echo json_encode($this->response_array);
-                exit;
+
+            //check if user already exists
+            $user_data = $this->CommonModel->getRecord('user_master', array('user_email' => $_POST['user_email']), '*');
+            if ($user_data->num_rows() > 0) {
+                //user already exits
+                $this->response_array['vanshavali_response']['code'] = 409;
+                $this->response_array['vanshavali_response']['message'] = 'Error 409 Conflicts . User Already Exists . Try Another username';
             } else {
-                //check if user already exists
-                $user_data = $this->CommonModel->getRecord('user_master', array('user_email' => $_POST['user_email']), '*');
-                if ($user_data->num_rows() > 0) {
-                    //user already exits
-                    $this->response_array['vanshavali_response']['code'] = 409;
-                    $this->response_array['vanshavali_response']['message'] = 'Error 409 Conflicts . User Already Exists . Try Another username';
-                } else {
-                    //go for registration
-                    $userinfo = array();
-                    $userinfo['user_email'] = $this->input->post('user_email');
-                    $userinfo['user_pass'] = md5($this->input->post('user_pass'));
+                //go for registration
+                $userinfo = array();
+                $userinfo['user_email'] = $this->input->post('user_email');
+                $userinfo['user_pass'] = md5($this->input->post('user_pass'));
+                $userinfo['token'] = $this->generateToken();
 
 
-                    //user type as simple user
-                    $userinfo['user_type_id'] = $this->CommonModel->getRecord('user_type', array('user_type_name' => 'SIMPLE_MEMBER'), 'user_type_id')->result_array()[0]['user_type_id'];
-                    $userinfo['is_verified'] = 0;
+                //user type as simple user
+                $userinfo['user_type_id'] = $this->CommonModel->getRecord('user_type', array('user_type_name' => 'SIMPLE_MEMBER'), 'user_type_id')->result_array()[0]['user_type_id'];
+                $userinfo['is_verified'] = 0;
 
-                    //random code
-                    $random_code = null;
+                //random code
+                $random_code = null;
 
-                    //check if code exists in database
-                    $temp = 1;
-                    while ($temp != 0) {
-                        $random_code = $this->createRandomCode();
-                        $temp = $this->CommonModel->getRecord('user_master', array('verification_code' => $random_code))->num_rows();
-                    }
-
-                    $userinfo['verification_code'] = $random_code;
-                    
-                    $userid = $this->CommonModel->save('user_master', $userinfo);
-
-                    //TODO : send mail code in registerUser
-
-
-                    $this->response_array['vanshavali_response']['code'] = 200;
-                    $this->response_array['vanshavali_response']['message'] = 'Status 200 OK. User Created Succesfully';
+                //check if code exists in database
+                $temp = 1;
+                while ($temp != 0) {
+                    $random_code = $this->createRandomCode(7);
+                    $temp = $this->CommonModel->getRecord('user_master', array('verification_code' => $random_code))->num_rows();
                 }
+
+                $userinfo['verification_code'] = $random_code;
+
+                $userid = $this->CommonModel->save('user_master', $userinfo);
+
+                //TODO : send mail code in registerUser
+
+
+                $this->response_array['vanshavali_response']['code'] = 200;
+                $this->response_array['vanshavali_response']['message'] = 'Status 200 OK. User Created Succesfully';
             }
         } else {
             //wrong parameters Error 400 Bad Request
@@ -128,15 +122,15 @@ class Login extends CI_Controller
         exit;
     }
 
-    private function createRandomCode()
+    private function createRandomCode($len = 10)
     {
 
-        $chars = "abcdefghijkmnopqrstuvwxyz023456789";
+        $chars = "abcdefghijkmnopqrstuvwxyzABCDEFGHIJKMNOPQRSTUVWXYZ0123456789";
         srand((double)microtime() * 1000000);
         $i = 0;
         $pass = '';
 
-        while ($i <= 7) {
+        while ($i <= $len) {
             $num = rand() % 33;
             $tmp = substr($chars, $num, 1);
             $pass = $pass . $tmp;
@@ -146,9 +140,10 @@ class Login extends CI_Controller
         return $pass;
 
     }
+
     //TODO: forgot Password
 
-    public function checkexists($update_field = false,$id = false)
+    public function checkexists($update_field = false, $id = false)
     {
         //update field and $id  used while edit in CRUD
 
@@ -165,13 +160,44 @@ class Login extends CI_Controller
 
         if ($c > 0) {
             $this->response_array['vanshavali_response']['code'] = 200;
-            $this->response_array['vanshavali_response']['message']=false;
+            $this->response_array['vanshavali_response']['message'] = false;
         } else {
             $this->response_array['vanshavali_response']['code'] = 200;
-            $this->response_array['vanshavali_response']['message']=true;
+            $this->response_array['vanshavali_response']['message'] = true;
         }
         echo json_encode($this->response_array);
         exit();
+
+    }
+
+    public function generateToken()
+    {
+
+        $random_code = "";
+        $num = -1;
+        while ($num != 0) {
+            //check if Exists in database
+            $random_code = $this->createRandomCode($this->len);
+            $num = $this->CommonModel->getRecord('user_master', array('token' => $random_code))->num_rows();
+        }
+
+        /* $this->response_array['vanshavali_response']['code']= 200;
+         $this->response_array['vanshavali_response']['message']= "random Code Generated";
+         $this->response_array['vanshavali_response']['data']['random_code']= $random_code;*/
+
+
+        return $random_code;
+
+    }
+
+    public function sendEmail(){
+        $to="yozo@tempcloud.info";
+        $subject="Test";
+        $text="Test email";
+        $response = $this->CommonModel->send_mail($to,$subject,$text);
+        echo '<pre>';
+            print_r($response);
+        echo '</pre>';
 
     }
 
