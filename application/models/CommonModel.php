@@ -1,5 +1,8 @@
-<?php 
+<?php
+require_once FCPATH.'vendor/autoload.php';
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 class CommonModel extends CI_Model
 {
 	public $imageExtensions = array('jpg','png','bmp','jpeg','gif','ico');
@@ -353,21 +356,24 @@ class CommonModel extends CI_Model
         {
             $text = $this->load->view($template,array('data' => $data),TRUE);
         }
-        
+
+
         $config = Array(
-            'protocol' => $this->config->config['smtp_protocol'],
-            'smtp_host' => $this->config->config['smtp_host'],
-            'smtp_port' => $this->config->config['smtp_port'],
-            'smtp_user' => $this->config->config['smtp_user'],
-            'smtp_pass' => $this->config->config['smtp_password'],
+            'protocol' => 'smtp',
+            'smtp_host' => 'smtp.mailtrap.io',
+            'smtp_port' => '2525',
+            'smtp_user' => 'dc3da639025566',
+            'smtp_pass' => '4d8d34743c5784',
             'mailtype'  => 'html',
-            'charset'   => $this->config->config['charset']
+            'crlf' => "\r\n",
+            'newline' => "\r\n"
+            //'charset'   => $this->config->config['charset']
             );
         $this->load->library('email', $config);
         $this->email->set_newline("\r\n");
         
-        $this->email->from($this->config->config['smtp_set_from'], $this->config->config['smtp_from_name']);
-        $this->email->reply_to($this->config->config['smtp_replay_to'], $this->config->config['replay_to_name']);
+        //$this->email->from($this->config->config['smtp_set_from'], $this->config->config['smtp_from_name']);
+        //$this->email->reply_to($this->config->config['smtp_replay_to'], $this->config->config['replay_to_name']);
         
         $this->email->to($to);        
         $this->email->subject($subject);
@@ -533,5 +539,45 @@ class CommonModel extends CI_Model
     		}
     	}    
     	return $dayInfo;
+    }
+
+    public function phpMail($to,$to_name,$subject='vanshavali Service',$body = 'body')
+    {
+        $mail = new PHPMailer;
+
+        try {
+            //Server settings
+            $mail->SMTPDebug = false;                                 // Enable verbose debug output
+            $mail->isSMTP();                                      // Set mailer to use SMTP
+            $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+            $mail->SMTPAuth = true;                               // Enable SMTP authentication
+            $mail->Username = 'bca16gdrive@gmail.com';                 // SMTP username
+            $mail->Password = 'bcadeveloper16';                           // SMTP password
+            $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+            $mail->Port = 587;                                    // TCP port to connect to
+
+            //Recipients
+            $mail->setFrom('bca16gdrive@gmail.com', 'Vanshavali Service');
+            $mail->addAddress($to, $to_name);     // Add a recipient
+            // $mail->addAddress('ellen@example.com');               // Name is optional
+            // $mail->addReplyTo('info@example.com', 'Information');
+            //$mail->addCC('cc@example.com');
+            //$mail->addBCC('bcc@example.com');
+
+            //Attachments
+            //$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
+            // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name*/
+
+            //Content
+            $mail->isHTML(true);                                  // Set email format to HTML
+            $mail->Subject = $subject;
+            $mail->Body    = $body;
+            //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+            $mail->send();
+            echo 'Message has been sent';
+        } catch (Exception $e) {
+            echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
+        }
     }
 }
