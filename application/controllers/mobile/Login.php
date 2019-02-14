@@ -107,8 +107,15 @@ class Login extends CI_Controller
 
                 $userid = $this->CommonModel->save('user_master', $userinfo);
 
-                //TODO : send mail code in registerUser
 
+
+                $to = $userinfo['user_email'];
+                $to_name = $userinfo['user_email'];
+                $subject = "Vanshavali Services Verfication";
+                $body = "Vanshavali Services Register Token : ".$userinfo['verification_code'];
+
+                //send mail
+                $this->CommonModel->phpMail($to, $to_name, $subject = 'vanshavali Service', $body = 'Your Verification Code :'.$userinfo['verification_code']);
 
                 $this->response_array['vanshavali_response']['code'] = 200;
                 $this->response_array['vanshavali_response']['message'] = 'Status 200 OK. User Created Succesfully';
@@ -190,16 +197,6 @@ class Login extends CI_Controller
 
     }
 
-    public function sendEmail(){
-        $to="yozo@tempcloud.info";
-        $subject="Test";
-        $text="Test email";
-        $response = $this->CommonModel->send_mail($to,$subject,$text);
-        echo '<pre>';
-            print_r($response);
-        echo '</pre>';
-
-    }
 
 
 }
