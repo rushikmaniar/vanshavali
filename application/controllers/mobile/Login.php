@@ -86,7 +86,6 @@ class Login extends CI_Controller
                 $userinfo = array();
                 $userinfo['user_email'] = $this->input->post('user_email');
                 $userinfo['user_pass'] = md5($this->input->post('user_pass'));
-                $userinfo['token'] = $this->generateToken();
 
 
                 //user type as simple user
@@ -195,6 +194,31 @@ class Login extends CI_Controller
 
         return $random_code;
 
+    }
+
+    public function verifyUser(){
+        if( (isset($_POST['user_email'])) && (isset($_POST['verification_code']))  ){
+            //get user from email
+            $user = $this->CommonModel->getRecord('user_master', array('user_email'=>$_POST['user_email'],'verification_code' => $_POST['verification_code']));
+            if($user->num_rows() == 0){
+                //error user not found
+                $this->response_array['vanshavali_response']['code'] = 204;
+                $this->response_array['vanshavali_response']['message'] = "User Not Found";
+            }
+            else{
+                $user = $user->row_array();
+                //make user verified
+                $this->CommonModel->update('user_master',array('is_verified'=>1,'verification_code'=>null),array('user_email'=>$_POST['user_email']));
+            }
+            $this->response_array['vanshavali_response']['code'] = 200;
+            $this->response_array['vanshavali_response']['message'] = "User Verified";
+
+        }else{
+            $this->response_array['vanshavali_response']['code'] = 400;
+            $this->response_array['vanshavali_response']['message'] = "Error 400 . bad Request";
+        }
+        echo json_encode($this->response_array);
+        exit;
     }
 
 
