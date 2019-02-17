@@ -222,6 +222,56 @@ class Login extends CI_Controller
         exit;
     }
 
+    public function isUserValid(){
+        if( (isset($_POST['user_email']))  && (isset($_POST['token'])) ){
+            //get user from email
+            $user = $this->CommonModel->getRecord('user_master', array('user_email'=>$_POST['user_email'],'verification_code' => null,'token'=>$_POST['token'],'token!='=>null));
+
+            if($user->num_rows() == 0){
+                //error user not found
+                $this->response_array['vanshavali_response']['code'] = 403;
+                $this->response_array['vanshavali_response']['message'] = "User Invlid.Try Login Again";
+            }
+            else{
+                $this->response_array['vanshavali_response']['code'] = 200;
+                $this->response_array['vanshavali_response']['message'] = "User Is Valid";
+            }
+        }else{
+            $this->response_array['vanshavali_response']['code'] = 400;
+            $this->response_array['vanshavali_response']['message'] = "Error 400 . bad Request";
+        }
+        echo json_encode($this->response_array);
+        exit;
+    }
+    public function checkUserCredentials(){
+        if( (isset($_POST['user_email']))  && (isset($_POST['user_pass'])) ){
+            //get user from email
+            $user = $this->CommonModel->getRecord('user_master', array('user_email'=>$_POST['user_email'],'user_pass' => md5($_POST['user_pass'])));
+
+            if($user->num_rows() == 0){
+                //error user not found
+                $this->response_array['vanshavali_response']['code'] = 403;
+                $this->response_array['vanshavali_response']['message'] = "User email or Password Incorrect";
+            }
+            else if($user->row_array()['verification_code'] != null){
+                $this->response_array['vanshavali_response']['code'] = 401;
+                $this->response_array['vanshavali_response']['message'] = "User Is Not Verified";
+            }else{
+                //generate token
+                $token = $this->generateToken();
+                $this->response_array['vanshavali_response']['data']['token'] = $token;
+                $this->CommonModel->update('user_master',array('token'=>$token),array('user_email'=>$_POST['user_email']));
+                $this->response_array['vanshavali_response']['code'] = 200;
+                $this->response_array['vanshavali_response']['message'] = "200 Ok . User OK";
+            }
+        }else{
+            $this->response_array['vanshavali_response']['code'] = 400;
+            $this->response_array['vanshavali_response']['message'] = "Error 400 . bad Request";
+        }
+        echo json_encode($this->response_array);
+        exit;
+    }
+
 
 
 }
