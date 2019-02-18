@@ -27,12 +27,16 @@ class FamilyTree extends MobileController
     {
         //logged in user data
 
-        $userdata = $this->sesssion->userdata('vanshavali-mobile');
-
         $val = '
             family_trees.family_tree_id,
             family_trees.family_tree_name,
             family_trees.family_tree_ownerid,
+       
+            (
+                SELECT  Count(member_list.member_id) As member_count
+                FROM    member_list
+                WHERE   (member_family_tree_id = family_tree_id)
+            ) As member_count,
             
             family_access_table.user_id,
             family_access_table.can_view,
@@ -41,7 +45,7 @@ class FamilyTree extends MobileController
             family_access_table.can_delete
             
         ';
-        $OrWhere = array('user_id' => $userdata['user_id']);
+        $OrWhere = array('user_id' => $this->userdata['user_id'],'can_view'=>1);
         $family_list = $this->CommonModel
             ->dbOrderBy(array('family_trees.family_tree_id' => 'DESC'))
             ->dbjoin(
@@ -52,10 +56,12 @@ class FamilyTree extends MobileController
                         'jointype' => 'inner'
                     )
                 )
-            )->getRecord('family_trees', $OrWhere, $val)->result_array();
+            )->getRecord('family_trees', $OrWhere, $val);
 
         $this->response_array['vanshavali_response']['code'] = 200;
-        $this->response_array['vanshavali_response']['data']['family_list'] = $family_list;
+
+        $this->response_array['vanshavali_response']['data']['no_of_rows'] = $family_list->num_rows();
+        $this->response_array['vanshavali_response']['data']['family_list'] = $family_list->result_array();
         $this->response_array['vanshavali_response']['message'] = 'Status 200 Ok . Family List Fetched';
 
         echo json_encode($this->response_array);

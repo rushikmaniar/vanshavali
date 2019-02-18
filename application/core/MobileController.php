@@ -22,17 +22,36 @@ class MobileController extends CI_Controller
         )
 
     );
+    protected $userdata = array();
 
     public function __construct()
     {
         parent::__construct();
         $this->load->model('CommonModel');
 
-        if((isset($_SESSION['vanshavali-mobile']))){
+
+        if( (isset($_POST['user_email']))   && (isset($_POST['token'])) ){
             //check if user exist in database
-            $whr = array("user_email"=>$this->session->userdata('vanshavali-mobile')['user_email'],"is_verified"=>1);
-            $result = $this->CommonModel->getRecord("user_master",$whr);
+            $val = '
+            user_id,
+            user_email,
+            user_type.user_type_name,
+            is_verified,
+            token as user_token
+            ';
+            $whr = array("user_email"=>$_POST['user_email'],"token"=>$_POST['token'],'is_verified'=>1);
+            $result = $this->CommonModel
+                ->dbjoin(
+                    array(
+                        array(
+                            'table' => 'user_type',
+                            'condition' => 'user_master.user_type_id = user_type.user_type_id',
+                            'jointype' => 'inner'
+                        )
+                    ))
+                ->getRecord("user_master",$whr,'user_id,user_email,');
             if($result->num_rows() == 1){
+                $this->userdata = $result->row_array();
                 //continue nothing to do . echo json response is compulsory
             }else{
                 $this->session->unset_userdata('vanshavali-mobile');
@@ -43,8 +62,8 @@ class MobileController extends CI_Controller
             }
         }else{
             //nothing
-            $this->response_array['vanshavali_response']['code'] = 401;
-            $this->response_array['vanshavali_response']['message'] = 'Session Expired.';
+            $this->response_array['vanshavali_response']['code'] = 400;
+            $this->response_array['vanshavali_response']['message'] = 'Error 400 Bad Request.';
             echo json_encode($this->response_array);
             exit;
         }
