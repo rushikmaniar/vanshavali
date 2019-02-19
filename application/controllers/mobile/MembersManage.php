@@ -25,15 +25,15 @@ class MembersManage extends MobileController
      * */
     public function getFamilyMemberList()
     {
-        $userdata = $this->session->userdata('vanshavali-mobile');
+        $userdata = $this->userdata;
 
-        if( (isset($_POST['family_id']))    ){
+        if( (isset($_POST['family_id'])) ){
             //check if user logged in can_view family
             $family_access_where = array(
                 'user_id'=>$userdata['user_id'],
                 'family_id'=>$_POST['family_id']
             );
-            $family_access = $this->getRecord('family_access_table',$family_access_where)->row_array();
+            $family_access = $this->CommonModel->getRecord('family_access_table',$family_access_where)->row_array();
 
             //check id can_view = 1
             if($family_access['can_view'] == 1){
@@ -41,11 +41,12 @@ class MembersManage extends MobileController
                 $member_list_where = array(
                     'member_family_tree_id'=>$_POST['family_id']
                 );
-                $member_list = $this->CommonModel->getRecord('member_list')->result_array();
+                $member_list = $this->CommonModel->getRecord('member_list');
 
-                $this->response_array['vanshavali_response']['data']['member_list'] = $member_list;
+                $this->response_array['vanshavali_response']['data']['member_list'] = $member_list->result_array();
+                $this->response_array['vanshavali_response']['data']['no_of_rows'] = $member_list->num_rows();
                 $this->response_array['vanshavali_response']['code'] = 200;
-                $this->response_array['vanshavali_response']['message'] = 'Status 200 Ok. Family Records Fetech Succcessfuly';
+                $this->response_array['vanshavali_response']['message'] = 'Status 200 Ok. Members Records Fetech Succcessfuly';
             }else{
                 //else user is not Authorised to view Family . Error 403 Forbidden
                 $this->response_array['vanshavali_response']['code'] = 403;
@@ -58,6 +59,8 @@ class MembersManage extends MobileController
             $this->response_array['vanshavali_response']['message'] = 'Error 400 Bad request. Invalid Parameters';
 
         }
+        echo json_encode($this->response_array);
+        exit;
     }
 
 }
