@@ -42,7 +42,7 @@ class MembersManage extends MobileController
                     'member_family_tree_id'=>$_POST['family_id']
                 );
                 $member_list = $this->CommonModel->getRecord('member_list');
-
+              
                 $this->response_array['vanshavali_response']['data']['member_list'] = $member_list->result_array();
                 $this->response_array['vanshavali_response']['data']['no_of_rows'] = $member_list->num_rows();
                 $this->response_array['vanshavali_response']['code'] = 200;
