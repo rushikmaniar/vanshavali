@@ -174,10 +174,23 @@ class MembersManage extends MobileController
                     'member_family_tree_id'=>$_POST['family_id']
                 );
                 $member_id = $_POST['member_id'];
-                $member_delete = $this->CommonModel->delete('member_list',array('member_id'=>$member_id));
+                $this->CommonModel->delete('member_list',array('member_id'=>$member_id));
+
+                //get and delete all children
+                $children = $this->getAllSubChildren($member_id);
+                $where = "member_id IN (";
+                foreach ($children as $val){
+                    if($val != $children[count($children)-1])
+                        $where = $where.$val." ,";
+                    else
+                        $where = $where.$val;
+                }
+                $where = $where. ")";
+               $this->CommonModel->delete('member_list',$where);
+
 
                 $this->response_array['vanshavali_response']['code'] = 200;
-                $this->response_array['vanshavali_response']['message'] = 'Status 200 Ok. Members Deleted Succcessfuly';
+                $this->response_array['vanshavali_response']['message'] = 'Status 200 Ok. Member and its children  Deleted Succcessfuly';
             }else{
                 //else user is not Authorised to view Family . Error 403 Forbidden
                 $this->response_array['vanshavali_response']['code'] = 403;
@@ -191,6 +204,37 @@ class MembersManage extends MobileController
         }
         echo json_encode($this->response_array);
         exit;
+    }
+
+    /*
+     * get all list of children
+     *
+     * */
+    private function getchildren($children,$member_id)
+    {
+
+        $child_list = $this->CommonModel->getRecord('member_list',array('member_parent_id'=>$member_id),'member_id');
+        if($child_list->num_rows() == 0){
+            return $children;
+        }else{
+            $children[] = array_map(function($arr){return $arr['member_id'];},$child_list->result_array());
+            foreach ($child_list->result_array() as $val){
+                $children = $this->getchildren($children,$val['member_id']);
+            }
+            return $children;
+        }
+
+    }
+    private function getAllSubChildren($member_id){
+        $children = array();
+        $children = $this->getchildren($children,$member_id);
+        $temp = array();
+        foreach ($children as $val){
+            foreach ($val as $sub_val){
+                $temp[] = $sub_val;
+            }
+        }
+        return $temp;
     }
 
 
