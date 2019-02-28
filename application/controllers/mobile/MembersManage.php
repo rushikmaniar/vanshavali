@@ -121,7 +121,7 @@ class MembersManage extends MobileController
             $family_access = $this->CommonModel->getRecord('family_access_table',$family_access_where)->row_array();
 
             //check id can_view = 1
-            if($family_access['can_edit'] == 1){
+            if($family_access['can_update'] == 1){
                 //user Authorised to view Family
                 $member_list_where = array(
                     'member_family_tree_id'=>$_POST['family_id']
@@ -178,16 +178,18 @@ class MembersManage extends MobileController
 
                 //get and delete all children
                 $children = $this->getAllSubChildren($member_id);
-                $where = "member_id IN (";
-                foreach ($children as $val){
-                    if($val != $children[count($children)-1])
-                        $where = $where.$val." ,";
-                    else
-                        $where = $where.$val;
+                
+                if(count($children) != 0){
+                    $where = "member_id IN (";
+                    foreach ($children as $val){
+                        if($val != $children[count($children)-1])
+                            $where = $where.$val." ,";
+                        else
+                            $where = $where.$val;
+                    }
+                    $where = $where. ")";
+                    $this->CommonModel->delete('member_list',$where);
                 }
-                $where = $where. ")";
-               $this->CommonModel->delete('member_list',$where);
-
 
                 $this->response_array['vanshavali_response']['code'] = 200;
                 $this->response_array['vanshavali_response']['message'] = 'Status 200 Ok. Member and its children  Deleted Succcessfuly';

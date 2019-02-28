@@ -74,8 +74,7 @@ class FamilyTree extends MobileController
     public function createFamilyTree()
     {
 
-        $userdata = $this->sesssion->userdata('vanshavali-mobile');
-
+        $userdata = $this->userdata;
         //get post data
         if ((isset($_POST['family_tree_name']))) {
             //check if family with sam name exists
@@ -122,7 +121,7 @@ class FamilyTree extends MobileController
      * */
     public function updateFamilyTree()
     {
-        $userdata = $this->sesssion->userdata('vanshavali-mobile');
+        $userdata = $this->userdata;
 
         //get post data
         if ((isset($_POST['new_family_tree_name'])) && (isset($_POST['old_family_tree_name'])) && (isset($_POST['family_id']))) {
@@ -173,7 +172,7 @@ class FamilyTree extends MobileController
      * */
     public function removeFamilyTree()
     {
-        $userdata = $this->sesssion->userdata('vanshavali-mobile');
+        $userdata = $this->userdata;
 
         if ((isset($_POST['family_id']))) {
 
@@ -181,7 +180,7 @@ class FamilyTree extends MobileController
 
             //now check if user is owner of family
             $where = array(
-                'family_id' => $_POST['family_id'],
+                'family_tree_id' => $_POST['family_id'],
                 'family_tree_ownerid' => $userdata['user_id']
             );
             $chcek_user = $this->CommonModel
@@ -190,7 +189,7 @@ class FamilyTree extends MobileController
                 //user is authorised
                 //go For delete
 
-                $delete_family = $this->CommonModel->delete('family_trees', array('family_id' => $_POST['family_id']));
+                $delete_family = $this->CommonModel->delete('family_trees', array('family_tree_id' => $_POST['family_id']));
 
                 $this->response_array['vanshavali_response']['code'] = 200;
                 $this->response_array['vanshavali_response']['message'] = '200 OK . Family Tree Successfully';
@@ -198,7 +197,6 @@ class FamilyTree extends MobileController
                 //user not authorised
                 $this->response_array['vanshavali_response']['code'] = 403;
                 $this->response_array['vanshavali_response']['message'] = 'Error 403 Forbidden . User Not Authorised';
-
             }
 
 

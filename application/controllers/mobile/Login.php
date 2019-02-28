@@ -260,6 +260,7 @@ class Login extends CI_Controller
                 //generate token
                 $token = $this->generateToken();
                 $this->response_array['vanshavali_response']['data']['token'] = $token;
+                $this->response_array['vanshavali_response']['data']['user_id'] = $user->row_array()['user_id'];
                 $this->CommonModel->update('user_master',array('token'=>$token),array('user_email'=>$_POST['user_email']));
                 $this->response_array['vanshavali_response']['code'] = 200;
                 $this->response_array['vanshavali_response']['message'] = "200 Ok . User OK";
