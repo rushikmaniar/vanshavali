@@ -172,6 +172,7 @@ class FamilyTree extends MobileController
      * */
     public function removeFamilyTree()
     {
+
         $userdata = $this->userdata;
 
         if ((isset($_POST['family_id']))) {
@@ -183,16 +184,16 @@ class FamilyTree extends MobileController
                 'family_tree_id' => $_POST['family_id'],
                 'family_tree_ownerid' => $userdata['user_id']
             );
-            $chcek_user = $this->CommonModel
+            $check_user = $this->CommonModel
                 ->getRecord('family_trees', $where)->num_rows();
-            if ($chcek_user == 1) {
+            if ($check_user == 1) {
                 //user is authorised
                 //go For delete
 
                 $delete_family = $this->CommonModel->delete('family_trees', array('family_tree_id' => $_POST['family_id']));
 
                 $this->response_array['vanshavali_response']['code'] = 200;
-                $this->response_array['vanshavali_response']['message'] = '200 OK . Family Tree Successfully';
+                $this->response_array['vanshavali_response']['message'] = '200 OK . Family Tree Deleted Successfully';
             } else {
                 //user not authorised
                 $this->response_array['vanshavali_response']['code'] = 403;

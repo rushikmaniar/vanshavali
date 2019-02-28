@@ -274,5 +274,81 @@ class Login extends CI_Controller
     }
 
 
+    /*
+     * forgot Password
+     * */
+    public function forgotPassword()
+    {
+        if( (isset($_POST['user_email']))){
+            //get user from email
+            $user = $this->CommonModel->getRecord('user_master', array('user_email'=>$_POST['user_email']));
+
+            if($user->num_rows() == 0){
+                //error user not found
+                $this->response_array['vanshavali_response']['code'] = 403;
+                $this->response_array['vanshavali_response']['message'] = "User email Not Found";
+            }
+            else if($user->row_array()['verification_code'] != null){
+                $this->response_array['vanshavali_response']['code'] = 401;
+                $this->response_array['vanshavali_response']['message'] = "User Is Not Verified";
+            }else{
+                //generate random code
+                $random_code = "";
+                $num = -1;
+                while ($num != 0) {
+                    //check if Exists in database
+                    $random_code = $this->createRandomCode(7);
+                    $num = $this->CommonModel->getRecord('user_master', array('random_code' => $random_code))->num_rows();
+                }
+
+                $this->CommonModel->update('user_master',array('random_code'=>$random_code),array('user_email'=>$_POST['user_email']));
+
+                $to = $_POST['user_email'];
+                $to_name = $_POST['user_email'];
+                $subject = "Vanshavali Services Verfication";
+                $body = "Vanshavali Services Forgot Password Verfication Code: ".$random_code . "<br>Please Don't Share This With Anyone";
+
+                //send mail
+                $this->CommonModel->phpMail($to, $to_name, $subject = 'vanshavali Service', $body);
+
+                $this->response_array['vanshavali_response']['code'] = 200;
+                $this->response_array['vanshavali_response']['message'] = "Email Send For Reset Password";
+            }
+        }else{
+            $this->response_array['vanshavali_response']['code'] = 400;
+            $this->response_array['vanshavali_response']['message'] = "Error 400 . bad Request";
+        }
+        echo json_encode($this->response_array);
+        exit;
+    }
+
+    /*
+     * forgot Password verfify
+     * */
+    public function forPasswordVerify()
+    {
+        if( (isset($_POST['user_email'])) && (isset($_POST['random_code']))  ){
+            //get user from email
+            $user = $this->CommonModel->getRecord('user_master', array('user_email'=>$_POST['user_email'],'random_code' => $_POST['random_code'],'is_verified'=>1));
+
+            if($user->num_rows() == 0){
+                //error user not found
+                $this->response_array['vanshavali_response']['code'] = 204;
+                $this->response_array['vanshavali_response']['message'] = "User Verification Failure.Try Later";
+            }
+            else{
+                $user = $user->row_array();
+                //make user verified
+                $this->response_array['vanshavali_response']['code'] = 200;
+                $this->response_array['vanshavali_response']['message'] = "User Forgot Password Code Correct";
+            }
+
+        }else{
+            $this->response_array['vanshavali_response']['code'] = 400;
+            $this->response_array['vanshavali_response']['message'] = "Error 400 . bad Request";
+        }
+        echo json_encode($this->response_array);
+        exit;
+    }
 
 }
