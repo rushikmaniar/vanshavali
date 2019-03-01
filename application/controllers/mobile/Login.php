@@ -325,7 +325,7 @@ class Login extends CI_Controller
     /*
      * forgot Password verfify
      * */
-    public function forPasswordVerify()
+    public function forgotPasswordVerify()
     {
         if( (isset($_POST['user_email'])) && (isset($_POST['random_code']))  ){
             //get user from email
@@ -338,9 +338,37 @@ class Login extends CI_Controller
             }
             else{
                 $user = $user->row_array();
-                //make user verified
                 $this->response_array['vanshavali_response']['code'] = 200;
                 $this->response_array['vanshavali_response']['message'] = "User Forgot Password Code Correct";
+            }
+
+        }else{
+            $this->response_array['vanshavali_response']['code'] = 400;
+            $this->response_array['vanshavali_response']['message'] = "Error 400 . bad Request";
+        }
+        echo json_encode($this->response_array);
+        exit;
+    }
+
+    /*
+     * Reset Password
+     * */
+    public function resetPassword()
+    {
+        if( (isset($_POST['user_email'])) && (isset($_POST['user_pass'])) && (isset($_POST['random_code']))  ){
+            //get user from email
+            $user = $this->CommonModel->getRecord('user_master', array('user_email'=>$_POST['user_email'],'random_code' => $_POST['random_code'],'is_verified'=>1));
+
+            if($user->num_rows() == 0){
+                //error user not found
+                $this->response_array['vanshavali_response']['code'] = 204;
+                $this->response_array['vanshavali_response']['message'] = "User Verification Failure.";
+            }
+            else{
+                $user = $user->row_array();
+                $this->CommonModel->update('user_master', array('random_code'=>null,'user_pass'=>md5($_POST['user_pass'])),array('user_email'=>$_POST['user_email'],'random_code' => $_POST['random_code'],'is_verified'=>1));
+                $this->response_array['vanshavali_response']['code'] = 200;
+                $this->response_array['vanshavali_response']['message'] = "Password Reset Successfully";
             }
 
         }else{
