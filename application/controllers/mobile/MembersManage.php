@@ -16,7 +16,6 @@ class MembersManage extends MobileController
     {
         parent::__construct();
     }
-    //TODO:getFamilyMemberList(),addFamilyMember(),updateFamilyMember(),deleteFamilyMemeber()
 
     /*
      * get List Of Memeber of Family Appropriate To user.
@@ -25,6 +24,7 @@ class MembersManage extends MobileController
      * */
     public function getFamilyMemberList()
     {
+
         $userdata = $this->userdata;
 
         if( (isset($_POST['family_id'])) ){
@@ -33,6 +33,7 @@ class MembersManage extends MobileController
                 'user_id'=>$userdata['user_id'],
                 'family_id'=>$_POST['family_id']
             );
+
             $family_access = $this->CommonModel->getRecord('family_access_table',$family_access_where)->row_array();
 
             //check id can_view = 1
@@ -41,8 +42,7 @@ class MembersManage extends MobileController
                 $member_list_where = array(
                     'member_family_tree_id'=>$_POST['family_id']
                 );
-                $member_list = $this->CommonModel->getRecord('member_list');
-              
+                $member_list = $this->CommonModel->getRecord('member_list',$member_list_where);
                 $this->response_array['vanshavali_response']['data']['member_list'] = $member_list->result_array();
                 $this->response_array['vanshavali_response']['data']['no_of_rows'] = $member_list->num_rows();
                 $this->response_array['vanshavali_response']['code'] = 200;
